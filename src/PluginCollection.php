@@ -8,12 +8,13 @@ use ArrayIterator;
 use ArrayObject;
 use Exception;
 use IteratorAggregate;
+use JsonSerializable;
 
 /**
  * Class PluginCollection
  * @package Yaroslavche\SyliusMarketplacePlugin
  */
-class PluginCollection implements IteratorAggregate
+class PluginCollection implements IteratorAggregate, JsonSerializable
 {
     /** @var array<string, PluginInterface> $plugins */
     private $plugins;
@@ -57,5 +58,23 @@ class PluginCollection implements IteratorAggregate
     public function getIterator(): ArrayIterator
     {
         return (new ArrayObject($this->plugins))->getIterator();
+    }
+
+    /** @inheritDoc */
+    public function jsonSerialize()
+    {
+        $array = [];
+        /** @var PluginInterface $plugin */
+        foreach ($this->plugins as $name => $plugin) {
+            $array[$name] = [
+                'name' => $plugin->getName(),
+                'description' => $plugin->getDescription(),
+                'url' => $plugin->getUrl(),
+                'repository' => $plugin->getRepository(),
+                'downloads' => $plugin->getDownloads(),
+                'favers' => $plugin->getFavers()
+            ];
+        }
+        return $array;
     }
 }

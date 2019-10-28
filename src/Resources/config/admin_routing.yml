@@ -2,3 +2,7 @@ yaroslavche_sylius_marketplace_plugin_index:
   path: /admin/plugins/
   controller: Yaroslavche\SyliusMarketplacePlugin\Controller\MarketplaceController::index
 
+yaroslavche_sylius_marketplace_plugin_list:
+  path: /admin/plugins/list
+  controller: Yaroslavche\SyliusMarketplacePlugin\Controller\MarketplaceController::list
+

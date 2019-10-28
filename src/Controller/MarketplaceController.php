@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Yaroslavche\SyliusMarketplacePlugin\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Yaroslavche\SyliusMarketplacePlugin\MarketplaceInterface;
 use Yaroslavche\SyliusMarketplacePlugin\Marketplace;
@@ -33,9 +35,15 @@ final class MarketplaceController extends AbstractController
      */
     public function index(): Response
     {
-        $plugins = $this->marketplace->getPluginRepository()->find();
-        return $this->render('@YaroslavcheSyliusMarketplacePlugin/base.html.twig', [
-            'plugins' => $plugins
-        ]);
+        return $this->render('@YaroslavcheSyliusMarketplacePlugin/index.html.twig');
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function list(Request $request): JsonResponse
+    {
+        return $this->json($this->marketplace->getPluginRepository()->find());
     }
 }
