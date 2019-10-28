@@ -1,0 +1,4 @@
+suites:
+    main:
+        namespace: Yaroslavche\SyliusMarketplacePlugin
+        psr4_prefix: Yaroslavche\SyliusMarketplacePlugin
