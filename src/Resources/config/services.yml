@@ -1,0 +1,12 @@
+services:
+  app.listener.admin.menu_builder:
+    class: Yaroslavche\SyliusMarketplacePlugin\Listener\AdminMenuListener
+    tags:
+      - { name: kernel.event_listener, event: sylius.menu.admin.main, method: addAdminMenuItems }
+
+  yaroslavche_sylius_marketplace_plugin_marketplace:
+    class: Yaroslavche\SyliusMarketplacePlugin\Marketplace
+    autowire: true
+    autoconfigure: true
+
+  Yaroslavche\SyliusMarketplacePlugin\Marketplace: '@yaroslavche_sylius_marketplace_plugin_marketplace'

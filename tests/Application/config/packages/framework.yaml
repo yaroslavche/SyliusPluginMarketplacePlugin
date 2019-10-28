@@ -1,7 +1,9 @@
 framework:
-    secret: '%env(APP_SECRET)%'
-    form: true
-    csrf_protection: true
-    templating: { engines: ["twig"] }
-    session:
-        handler_id: ~
+  secret: '%env(APP_SECRET)%'
+  form: true
+  csrf_protection: true
+  templating: { engines: ["twig"] }
+  session:
+    handler_id: 'session.handler.native_file'
+    save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+

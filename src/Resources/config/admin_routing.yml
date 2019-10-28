@@ -1,0 +1,4 @@
+yaroslavche_sylius_marketplace_plugin_index:
+  path: /admin/plugins/
+  controller: Yaroslavche\SyliusMarketplacePlugin\Controller\MarketplaceController::index
+

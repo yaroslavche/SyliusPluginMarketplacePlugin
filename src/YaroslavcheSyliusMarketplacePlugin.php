@@ -7,6 +7,10 @@ namespace Yaroslavche\SyliusMarketplacePlugin;
 use Sylius\Bundle\CoreBundle\Application\SyliusPluginTrait;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/**
+ * Class YaroslavcheSyliusMarketplacePlugin
+ * @package Yaroslavche\SyliusMarketplacePlugin
+ */
 final class YaroslavcheSyliusMarketplacePlugin extends Bundle
 {
     use SyliusPluginTrait;
