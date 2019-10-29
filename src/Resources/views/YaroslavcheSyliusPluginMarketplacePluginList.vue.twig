@@ -19,30 +19,32 @@
         <th class="five wide single line pointer" @click="sort('name')"
             :class="{'sorted': currentSort.field === 'name'}">
             Name
-            <i v-show="currentSort.field === 'name'" class="angle icon"
+            <i v-show="currentSort.field === 'name'" class="sort icon"
                :class="{'down': currentSort.direction === 'desc', 'up': currentSort.direction === 'asc'}"></i>
         </th>
         <th class="eight wide">Description</th>
         <th class="one wide pointer" @click="sort('downloads')"
             :class="{'sorted': currentSort.field === 'downloads', 'asc': currentSort.direction === 'asc', 'desc': currentSort.direction === 'desc'}">
             <i class="cloud download icon"></i>
-            <i v-show="currentSort.field === 'downloads'" class="angle icon"
+            <i v-show="currentSort.field === 'downloads'" class="sort icon"
                :class="{'down': currentSort.direction === 'desc', 'up': currentSort.direction === 'asc'}"></i>
         </th>
         <th class="one wide pointer" @click="sort('favers')"
             :class="{'sorted': currentSort.field === 'favers', 'asc': currentSort.direction === 'asc', 'desc': currentSort.direction === 'desc'}">
             <i class="star outline icon"></i>
-            <i v-show="currentSort.field === 'favers'" class="angle icon"
+            <i v-show="currentSort.field === 'favers'" class="sort icon"
                :class="{'down': currentSort.direction === 'desc', 'up': currentSort.direction === 'asc'}"></i>
         </th>
     </tr>
     </thead>
     <tbody>
     <tr v-for="(plugin, key) in visible" :key="key" :class="{installed: plugin.installed}">
-        <td>
+        <td class="right aligned">
             <span v-text="++key + (currentPage * perPage)"></span>
-            <a v-show="plugin.installed === false" @click="installPlugin(plugin.name)" class="pointer">Install</a>
-            <a v-show="plugin.installed === true" @click="uninstallPlugin(plugin.name)" class="pointer">Uninstall</a>
+            <i class="toggle off icon pointer" v-show="plugin.installed === false"
+               @click="installPlugin(plugin.name)"></i>
+            <i class="toggle on icon pointer" v-show="plugin.installed === true"
+               @click="uninstallPlugin(plugin.name)"></i>
         </td>
         <td>
             <a :href="plugin.repository"><span v-text="plugin.name"></span></a>
