@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Yaroslavche\SyliusPluginMarketplacePlugin;
 
 /**
- * Class PluginMarketplaceService
- * @package Yaroslavche\SyliusPluginMarketplacePlugin\Service
+ * Class PluginMarketplace
+ * @package Yaroslavche\SyliusPluginMarketplacePlugin
  */
-class Marketplace implements MarketplaceInterface
+class PluginMarketplace implements PluginMarketplaceInterface
 {
     /** @var PluginRepositoryInterface $pluginRepository */
     private $pluginRepository;

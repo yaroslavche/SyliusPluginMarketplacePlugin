@@ -1,16 +1,16 @@
 yaroslavche_sylius_plugin_marketplace_plugin_index:
   path: /admin/plugins/
-  controller: Yaroslavche\SyliusPluginMarketplacePlugin\Controller\MarketplaceController::index
+  controller: Yaroslavche\SyliusPluginMarketplacePlugin\Controller\PluginMarketplaceController::index
 
 yaroslavche_sylius_plugin_marketplace_plugin_list:
   path: /admin/plugins/list
-  controller: Yaroslavche\SyliusPluginMarketplacePlugin\Controller\MarketplaceController::list
+  controller: Yaroslavche\SyliusPluginMarketplacePlugin\Controller\PluginMarketplaceController::list
 
 yaroslavche_sylius_plugin_marketplace_plugin_install:
   path: /admin/plugins/install
-  controller: Yaroslavche\SyliusPluginMarketplacePlugin\Controller\MarketplaceController::install
+  controller: Yaroslavche\SyliusPluginMarketplacePlugin\Controller\PluginMarketplaceController::install
 
 yaroslavche_sylius_plugin_marketplace_plugin_uninstall:
   path: /admin/plugins/uninstall
-  controller: Yaroslavche\SyliusPluginMarketplacePlugin\Controller\MarketplaceController::uninstall
+  controller: Yaroslavche\SyliusPluginMarketplacePlugin\Controller\PluginMarketplaceController::uninstall
 

@@ -9,18 +9,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Yaroslavche\SyliusPluginMarketplacePlugin\MarketplaceInterface;
-use Yaroslavche\SyliusPluginMarketplacePlugin\Marketplace;
+use Yaroslavche\SyliusPluginMarketplacePlugin\PluginMarketplaceInterface;
+use Yaroslavche\SyliusPluginMarketplacePlugin\PluginMarketplace;
 use Yaroslavche\SyliusPluginMarketplacePlugin\PluginInterface;
 
 /**
  * Class MarketplaceController
  * @package Yaroslavche\SyliusPluginMarketplacePlugin\Controller
  */
-final class MarketplaceController extends AbstractController
+final class PluginMarketplaceController extends AbstractController
 {
     /**
-     * @var MarketplaceInterface $marketplace
+     * @var PluginMarketplaceInterface $marketplace
      */
     private $marketplace;
 
@@ -29,7 +29,7 @@ final class MarketplaceController extends AbstractController
      */
     public function __construct()
     {
-        $this->marketplace = new Marketplace();
+        $this->marketplace = new PluginMarketplace();
     }
 
     /**

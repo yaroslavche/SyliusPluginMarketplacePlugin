@@ -10,7 +10,7 @@ use Exception;
  * Interface PluginMarketplaceInterface
  * @package Yaroslavche\SyliusPluginMarketplacePlugin
  */
-interface MarketplaceInterface
+interface PluginMarketplaceInterface
 {
     /**
      * @param array<string, string>|null $filter
