@@ -55,9 +55,10 @@ class PackagistPluginRepository implements PluginRepositoryInterface
         // ---
         foreach ($responseObject->results as $package) {
             $plugin = new Plugin();
+            $installed = array_key_exists($package->name, $composerJson['require']);
             $plugin
                 ->setName($package->name)
-                ->setInstalled(array_key_exists($package->name, $composerJson['require']))
+                ->setInstalled($installed)
                 ->setDescription($package->description)
                 ->setUrl($package->url)
                 ->setRepository($package->repository)
