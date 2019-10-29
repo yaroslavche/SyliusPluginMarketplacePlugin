@@ -3,13 +3,13 @@
     <tr>
         <th colspan="5">
             <div class="ui right floated pagination menu">
-                <a class="icon item">
-                    <i class="left chevron icon" @click="prevPage()"></i>
+                <a class="icon item" @click="prevPage()">
+                    <i class="left chevron icon"></i>
                 </a>
                 <a class="item" :class="{'selected': currentPage === page - 1}" v-for="page in pagesCount" :key="page"
                    @click="setPage(page)">{{ page }}</a>
-                <a class="icon item">
-                    <i class="right chevron icon" @click="nextPage()"></i>
+                <a class="icon item" @click="nextPage()">
+                    <i class="right chevron icon"></i>
                 </a>
             </div>
         </th>

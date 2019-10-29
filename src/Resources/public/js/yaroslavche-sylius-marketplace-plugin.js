@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
                 this.selectVisible();
             },
             prevPage: function () {
+                console.warn(this.currentPage);
                 if (this.currentPage < 1) {
                     return;
                 }
@@ -49,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
                 this.selectVisible();
             },
             nextPage: function () {
-                if (this.currentPage >= this.pagesCount) {
+                if (this.currentPage >= this.pagesCount - 1) {
                     return;
                 }
                 this.currentPage++;
