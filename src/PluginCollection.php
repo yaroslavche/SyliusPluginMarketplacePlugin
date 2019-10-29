@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yaroslavche\SyliusMarketplacePlugin;
+namespace Yaroslavche\SyliusPluginMarketplacePlugin;
 
 use ArrayIterator;
 use ArrayObject;
@@ -12,7 +12,7 @@ use JsonSerializable;
 
 /**
  * Class PluginCollection
- * @package Yaroslavche\SyliusMarketplacePlugin
+ * @package Yaroslavche\SyliusPluginMarketplacePlugin
  */
 class PluginCollection implements IteratorAggregate, JsonSerializable
 {

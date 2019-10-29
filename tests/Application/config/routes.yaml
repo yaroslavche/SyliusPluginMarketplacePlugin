@@ -1,2 +1,2 @@
 yaroslavche_sylius_marketplace_plugin:
-    resource: "@YaroslavcheSyliusMarketplacePlugin/Resources/config/admin_routing.yml"
+    resource: "@YaroslavcheSyliusPluginMarketplacePlugin/Resources/config/admin_routing.yml"

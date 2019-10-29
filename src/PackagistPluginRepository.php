@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Yaroslavche\SyliusMarketplacePlugin;
+namespace Yaroslavche\SyliusPluginMarketplacePlugin;
 
 use Exception;
 use GuzzleHttp\Client;
 
 /**
  * Class PackagistPluginRepository
- * @package Yaroslavche\SyliusMarketplacePlugin
+ * @package Yaroslavche\SyliusPluginMarketplacePlugin
  */
 class PackagistPluginRepository implements PluginRepositoryInterface
 {

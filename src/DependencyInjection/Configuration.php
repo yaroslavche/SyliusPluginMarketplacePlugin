@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yaroslavche\SyliusMarketplacePlugin\DependencyInjection;
+namespace Yaroslavche\SyliusPluginMarketplacePlugin\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -14,13 +14,13 @@ final class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('yaroslavche_sylius_marketplace_plugin');
+        $treeBuilder = new TreeBuilder('yaroslavche_sylius_plugin_marketplace_plugin');
         if (\method_exists($treeBuilder, 'getRootNode')) {
             $rootNode = $treeBuilder->getRootNode();
         } else {
             // suppose to remove support versions using < 4.1
             // BC layer for symfony/config 4.1 and older
-            $rootNode = $treeBuilder->root('yaroslavche_sylius_marketplace_plugin');
+            $rootNode = $treeBuilder->root('yaroslavche_sylius_plugin_marketplace_plugin');
         }
 
         return $treeBuilder;

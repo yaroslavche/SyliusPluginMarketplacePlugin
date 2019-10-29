@@ -1,5 +1,5 @@
 {
-  "name": "yaroslavche/sylius-marketplace-plugin",
+  "name": "yaroslavche/sylius-plugin-marketplace-plugin",
   "type": "sylius-plugin",
   "keywords": [
     "sylius",
@@ -48,8 +48,8 @@
   "prefer-stable": true,
   "autoload": {
     "psr-4": {
-      "Yaroslavche\\SyliusMarketplacePlugin\\": "src/",
-      "Tests\\Yaroslavche\\SyliusMarketplacePlugin\\": "tests/"
+      "Yaroslavche\\SyliusPluginMarketplacePlugin\\": "src/",
+      "Tests\\Yaroslavche\\SyliusPluginMarketplacePlugin\\": "tests/"
     }
   },
   "autoload-dev": {

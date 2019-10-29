@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Yaroslavche\SyliusMarketplacePlugin\Listener;
+namespace Yaroslavche\SyliusPluginMarketplacePlugin\Listener;
 
 use Sylius\Bundle\UiBundle\Menu\Event\MenuBuilderEvent;
 
 /**
  * Class AdminMenuListener
- * @package Yaroslavche\SyliusMarketplacePlugin\Listener
+ * @package Yaroslavche\SyliusPluginMarketplacePlugin\Listener
  */
 final class AdminMenuListener
 {
@@ -25,7 +25,7 @@ final class AdminMenuListener
         }
 
         $configMenu
-            ->addChild('plugin_marketplace', ['route' => 'yaroslavche_sylius_marketplace_plugin_index'])
+            ->addChild('plugin_marketplace', ['route' => 'yaroslavche_sylius_plugin_marketplace_plugin_index'])
             ->setLabel('Plugin Marketplace');
     }
 }

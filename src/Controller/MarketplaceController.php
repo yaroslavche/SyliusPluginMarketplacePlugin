@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Yaroslavche\SyliusMarketplacePlugin\Controller;
+namespace Yaroslavche\SyliusPluginMarketplacePlugin\Controller;
 
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Yaroslavche\SyliusMarketplacePlugin\MarketplaceInterface;
-use Yaroslavche\SyliusMarketplacePlugin\Marketplace;
+use Yaroslavche\SyliusPluginMarketplacePlugin\MarketplaceInterface;
+use Yaroslavche\SyliusPluginMarketplacePlugin\Marketplace;
 
 /**
  * Class MarketplaceController
- * @package Yaroslavche\SyliusMarketplacePlugin\Controller
+ * @package Yaroslavche\SyliusPluginMarketplacePlugin\Controller
  */
 final class MarketplaceController extends AbstractController
 {
@@ -35,7 +35,7 @@ final class MarketplaceController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('@YaroslavcheSyliusMarketplacePlugin/index.html.twig');
+        return $this->render('YaroslavcheSyliusPluginMarketplacePlugin::index.html.twig');
     }
 
     /**

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Yaroslavche\SyliusMarketplacePlugin\Application;
+namespace Tests\Yaroslavche\SyliusPluginMarketplacePlugin\Application;
 
 use PSS\SymfonyMockerContainer\DependencyInjection\MockerContainer;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;

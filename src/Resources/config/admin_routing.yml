@@ -1,8 +1,8 @@
-yaroslavche_sylius_marketplace_plugin_index:
+yaroslavche_sylius_plugin_marketplace_plugin_index:
   path: /admin/plugins/
-  controller: Yaroslavche\SyliusMarketplacePlugin\Controller\MarketplaceController::index
+  controller: Yaroslavche\SyliusPluginMarketplacePlugin\Controller\MarketplaceController::index
 
-yaroslavche_sylius_marketplace_plugin_list:
+yaroslavche_sylius_plugin_marketplace_plugin_list:
   path: /admin/plugins/list
-  controller: Yaroslavche\SyliusMarketplacePlugin\Controller\MarketplaceController::list
+  controller: Yaroslavche\SyliusPluginMarketplacePlugin\Controller\MarketplaceController::list
 

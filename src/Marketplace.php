@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Yaroslavche\SyliusMarketplacePlugin;
+namespace Yaroslavche\SyliusPluginMarketplacePlugin;
 
 /**
  * Class PluginMarketplaceService
- * @package Yaroslavche\SyliusMarketplacePlugin\Service
+ * @package Yaroslavche\SyliusPluginMarketplacePlugin\Service
  */
 class Marketplace implements MarketplaceInterface
 {

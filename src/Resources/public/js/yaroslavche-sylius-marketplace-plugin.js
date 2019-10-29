@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function (event) {
-    Vue.component('YaroslavcheSyliusMarketplacePluginList', {
-        template: '#YaroslavcheSyliusMarketplacePluginList',
+    Vue.component('YaroslavcheSyliusPluginMarketplacePluginList', {
+        template: '#YaroslavcheSyliusPluginMarketplacePluginList',
         data: function () {
             return {
                 descriptionLength: 100,
@@ -63,6 +63,6 @@ document.addEventListener('DOMContentLoaded', function (event) {
     });
 
     const marketplace = new Vue({
-        el: '#yaroslavche-sylius-marketplace-plugin'
+        el: '#yaroslavche-sylius-plugin-marketplace-plugin'
     });
 });

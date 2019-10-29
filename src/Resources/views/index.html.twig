@@ -6,7 +6,7 @@
     {% include 'SyliusUiBundle::_stylesheets.html.twig' with {
         'path' : 'assets/admin/css/style.css'
     } %}
-    {% include 'YaroslavcheSyliusMarketplacePlugin::_stylesheets.html.twig' %}
+    {% include 'YaroslavcheSyliusPluginMarketplacePlugin::_stylesheets.html.twig' %}
     {{ sonata_block_render_event('sylius.admin.layout.stylesheets') }}
 {% endblock %}
 
@@ -14,15 +14,15 @@
     {% include 'SyliusUiBundle::_javascripts.html.twig' with {
         'path' : 'assets/admin/js/app.js'
     } %}
-    {% include 'YaroslavcheSyliusMarketplacePlugin::_javascripts.html.twig' %}
+    {% include 'YaroslavcheSyliusPluginMarketplacePlugin::_javascripts.html.twig' %}
     {{ sonata_block_render_event('sylius.admin.layout.javascripts') }}
 {% endblock %}
 
 {% block content %}
-    <script type="text/x-template" id="YaroslavcheSyliusMarketplacePluginList">
-        {{ source('YaroslavcheSyliusMarketplacePlugin::YaroslavcheSyliusMarketplacePluginList.vue.twig') }}
+    <script type="text/x-template" id="YaroslavcheSyliusPluginMarketplacePluginList">
+        {{ source('YaroslavcheSyliusPluginMarketplacePlugin::YaroslavcheSyliusPluginMarketplacePluginList.vue.twig') }}
     </script>
-    <div id="yaroslavche-sylius-marketplace-plugin">
-        <yaroslavche-sylius-marketplace-plugin-list></yaroslavche-sylius-marketplace-plugin-list>
+    <div id="yaroslavche-sylius-plugin-marketplace-plugin">
+        <yaroslavche-sylius-plugin-marketplace-plugin-list></yaroslavche-sylius-plugin-marketplace-plugin-list>
     </div>
 {% endblock %}
