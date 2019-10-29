@@ -26,16 +26,6 @@ class Plugin implements PluginInterface
     private $installed;
 
     /** @inheritDoc */
-    public function install(): void
-    {
-    }
-
-    /** @inheritDoc */
-    public function uninstall(): void
-    {
-    }
-
-    /** @inheritDoc */
     public function getName(): string
     {
         return $this->name;

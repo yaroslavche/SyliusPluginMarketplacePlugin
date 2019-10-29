@@ -56,6 +56,20 @@ document.addEventListener('DOMContentLoaded', function (event) {
                 this.currentPage++;
                 this.selectVisible();
             },
+            installPlugin: function (name) {
+                axios.post('/admin/plugins/install', {name}).then(response => {
+                    if (response.data.status === 'success') {
+                        alert(response.data.message);
+                    }
+                }).catch(error => console.error(error));
+            },
+            uninstallPlugin: function (name) {
+                axios.post('/admin/plugins/uninstall', {name}).then(response => {
+                    if (response.data.status === 'success') {
+                        alert(response.data.message);
+                    }
+                }).catch(error => console.error(error));
+            },
         },
         created: function () {
             this.fetchPlugins();

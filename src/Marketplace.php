@@ -30,13 +30,13 @@ class Marketplace implements MarketplaceInterface
     /** @inheritDoc */
     public function installPlugin(PluginInterface $plugin): void
     {
-        $plugin->install();
+        (new PluginInstall($plugin))->install();
     }
 
     /** @inheritDoc */
     public function uninstallPlugin(PluginInterface $plugin): void
     {
-        $plugin->uninstall();
+        (new PluginUninstall($plugin))->uninstall();
     }
 
     /** @inheritDoc */

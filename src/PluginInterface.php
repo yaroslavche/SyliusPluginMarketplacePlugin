@@ -10,10 +10,6 @@ namespace Yaroslavche\SyliusPluginMarketplacePlugin;
  */
 interface PluginInterface
 {
-    public function install(): void;
-
-    public function uninstall(): void;
-
     /**
      * @return string
      */

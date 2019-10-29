@@ -6,3 +6,11 @@ yaroslavche_sylius_plugin_marketplace_plugin_list:
   path: /admin/plugins/list
   controller: Yaroslavche\SyliusPluginMarketplacePlugin\Controller\MarketplaceController::list
 
+yaroslavche_sylius_plugin_marketplace_plugin_install:
+  path: /admin/plugins/install
+  controller: Yaroslavche\SyliusPluginMarketplacePlugin\Controller\MarketplaceController::install
+
+yaroslavche_sylius_plugin_marketplace_plugin_uninstall:
+  path: /admin/plugins/uninstall
+  controller: Yaroslavche\SyliusPluginMarketplacePlugin\Controller\MarketplaceController::uninstall
+

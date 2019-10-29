@@ -39,7 +39,11 @@
     </thead>
     <tbody>
     <tr v-for="(plugin, key) in visible" :key="key" :class="{installed: plugin.installed}">
-        <td v-text="++key + (currentPage * perPage)"></td>
+        <td>
+            <span v-text="++key + (currentPage * perPage)"></span>
+            <a v-show="plugin.installed === false" @click="installPlugin(plugin.name)" class="pointer">Install</a>
+            <a v-show="plugin.installed === true" @click="uninstallPlugin(plugin.name)" class="pointer">Uninstall</a>
+        </td>
         <td>
             <a :href="plugin.repository"><span v-text="plugin.name"></span></a>
         </td>
