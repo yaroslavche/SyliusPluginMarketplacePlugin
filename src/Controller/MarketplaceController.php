@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Yaroslavche\SyliusMarketplacePlugin\Controller;
 
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Yaroslavche\SyliusMarketplacePlugin\MarketplaceInterface;
 use Yaroslavche\SyliusMarketplacePlugin\Marketplace;
@@ -39,11 +39,15 @@ final class MarketplaceController extends AbstractController
     }
 
     /**
-     * @param Request $request
      * @return JsonResponse
      */
-    public function list(Request $request): JsonResponse
+    public function list(): JsonResponse
     {
-        return $this->json($this->marketplace->getPluginRepository()->find());
+        try {
+            $plugins = $this->marketplace->getPluginRepository()->find();
+        } catch (Exception $exception) {
+            return $this->json(['status' => 'error', 'message' => $exception->getMessage()]);
+        }
+        return $this->json(['status' => 'success', 'plugins' => $plugins]);
     }
 }

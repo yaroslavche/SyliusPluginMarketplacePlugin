@@ -65,8 +65,8 @@ class PluginCollection implements IteratorAggregate, JsonSerializable
     {
         $array = [];
         /** @var PluginInterface $plugin */
-        foreach ($this->plugins as $name => $plugin) {
-            $array[$name] = [
+        foreach ($this->plugins as $plugin) {
+            $array[] = [
                 'name' => $plugin->getName(),
                 'description' => $plugin->getDescription(),
                 'url' => $plugin->getUrl(),

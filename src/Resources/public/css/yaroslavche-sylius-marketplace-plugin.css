@@ -1,0 +1,7 @@
+.pagination.menu a.item.selected {
+    background-color: #00b3ee;
+}
+
+th.ordered {
+    color: #00b3ee !important;
+}

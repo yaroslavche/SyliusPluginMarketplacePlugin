@@ -32,9 +32,22 @@ class PackagistPluginRepository implements PluginRepositoryInterface
     {
         $nameFilter = $name !== null ? sprintf('q=%s&', $name) : '';
         $uri = sprintf('/search.json?%stype=sylius-plugin&per_page=%d', $nameFilter, 100);
-        $response = $this->client->get($uri);
+        return $this->loadPage($uri);
+    }
+
+    /**
+     * @param string $uri
+     * @param int $page
+     * @param PluginCollection|null $collection
+     * @return PluginCollection
+     * @throws Exception
+     */
+    private function loadPage(string $uri, int $page = 1, ?PluginCollection &$collection = null): PluginCollection
+    {
+        $pageUri = sprintf('%s&page=%d', $uri, $page);
+        $response = $this->client->get($pageUri);
         $responseObject = json_decode($response->getBody()->getContents());
-        $collection = new PluginCollection();
+        $collection = $collection ?? new PluginCollection();
         foreach ($responseObject->results as $package) {
             $plugin = new Plugin();
             $plugin
@@ -45,6 +58,9 @@ class PackagistPluginRepository implements PluginRepositoryInterface
                 ->setDownloads($package->downloads)
                 ->setFavers($package->favers);
             $collection->add($plugin);
+        }
+        if (property_exists($responseObject, 'next')) {
+            $this->loadPage($uri, ++$page, $collection);
         }
         return $collection;
     }

@@ -1,23 +1,55 @@
 <table class="ui celled padded table">
     <thead>
     <tr>
-        <th class="single line">Name</th>
-        <th>Description</th>
-        <th>Downloads</th>
-        <th>Favers</th>
+        <th colspan="5">
+            <div class="ui right floated pagination menu">
+                <a class="icon item">
+                    <i class="left chevron icon" @click="prevPage()"></i>
+                </a>
+                <a class="item" :class="{'selected': currentPage === page - 1}" v-for="page in pagesCount" :key="page"
+                   @click="setPage(page)">{{ page }}</a>
+                <a class="icon item">
+                    <i class="right chevron icon" @click="nextPage()"></i>
+                </a>
+            </div>
+        </th>
+    </tr>
+    <tr>
+        <th class="one wide">#</th>
+        <th class="five wide single line" @click="sort('name')"
+            :class="{'ordered': currentSort.field === 'name'}">
+            Name
+            <i v-show="currentSort.field === 'name'" class="angle icon"
+               :class="{'down': currentSort.direction === 'desc', 'up': currentSort.direction === 'asc'}"></i>
+        </th>
+        <th class="eight wide">Description</th>
+        <th class="one wide" @click="sort('downloads')"
+            :class="{'ordered': currentSort.field === 'downloads', 'asc': currentSort.direction === 'asc', 'desc': currentSort.direction === 'desc'}">
+            <i class="cloud download icon"></i>
+            <i v-show="currentSort.field === 'downloads'" class="angle icon"
+               :class="{'down': currentSort.direction === 'desc', 'up': currentSort.direction === 'asc'}"></i>
+        </th>
+        <th class="one wide" @click="sort('favers')"
+            :class="{'ordered': currentSort.field === 'favers', 'asc': currentSort.direction === 'asc', 'desc': currentSort.direction === 'desc'}">
+            <i class="star outline icon"></i>
+            <i v-show="currentSort.field === 'favers'" class="angle icon"
+               :class="{'down': currentSort.direction === 'desc', 'up': currentSort.direction === 'asc'}"></i>
+        </th>
     </tr>
     </thead>
     <tbody>
-    <tr v-for="(plugin, key) in plugins">
+    <tr v-for="(plugin, key) in visible">
+        <td v-text="++key + (currentPage * perPage)"></td>
         <td>
             <a :href="plugin.repository"><span v-text="plugin.name"></span></a>
         </td>
-        <td class="single line" v-text="plugin.description"></td>
+        <td class="single line"
+            v-text="plugin.description.slice(0, descriptionLength) + (descriptionLength < plugin.description.length ? '...' : '')"></td>
         <td class="left aligned">
-            <i class="cloud download icon"></i>&nbsp;<span v-text="plugin.downloads"></span>
+            <span v-text="plugin.downloads"></span>
         </td>
         <td class="left aligned">
-            <i class="star outline icon"></i>&nbsp;<span v-text="plugin.favers"></span>
+            <span v-text="plugin.favers"></span>
         </td>
     </tr>
     </tbody>
@@ -26,14 +58,12 @@
         <th colspan="5">
             <div class="ui right floated pagination menu">
                 <a class="icon item">
-                    <i class="left chevron icon"></i>
+                    <i class="left chevron icon" @click="prevPage()"></i>
                 </a>
-                <a class="item">1</a>
-                <a class="item">2</a>
-                <a class="item">3</a>
-                <a class="item">4</a>
+                <a class="item" :class="{'selected': currentPage === page - 1}" v-for="page in pagesCount" :key="page"
+                   @click="setPage(page)">{{ page }}</a>
                 <a class="icon item">
-                    <i class="right chevron icon"></i>
+                    <i class="right chevron icon" @click="nextPage()"></i>
                 </a>
             </div>
         </th>
