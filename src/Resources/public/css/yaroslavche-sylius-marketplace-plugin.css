@@ -9,3 +9,7 @@ th.sorted {
 .pointer {
     cursor: pointer !important;
 }
+
+tr.installed {
+    background-color: #d8ffd8;
+}

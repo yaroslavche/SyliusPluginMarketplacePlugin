@@ -38,7 +38,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr v-for="(plugin, key) in visible">
+    <tr v-for="(plugin, key) in visible" :key="key" :class="{installed: plugin.installed}">
         <td v-text="++key + (currentPage * perPage)"></td>
         <td>
             <a :href="plugin.repository"><span v-text="plugin.name"></span></a>

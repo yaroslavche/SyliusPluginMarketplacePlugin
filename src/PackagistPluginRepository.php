@@ -48,10 +48,16 @@ class PackagistPluginRepository implements PluginRepositoryInterface
         $response = $this->client->get($pageUri);
         $responseObject = json_decode($response->getBody()->getContents());
         $collection = $collection ?? new PluginCollection();
+        // ---
+        $projectRootDir = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..');
+        $composerJsonFilePath = sprintf('%s%scomposer.json', $projectRootDir, DIRECTORY_SEPARATOR);
+        $composerJson = json_decode(file_get_contents($composerJsonFilePath), true);
+        // ---
         foreach ($responseObject->results as $package) {
             $plugin = new Plugin();
             $plugin
                 ->setName($package->name)
+                ->setInstalled(array_key_exists($package->name, $composerJson['require']))
                 ->setDescription($package->description)
                 ->setUrl($package->url)
                 ->setRepository($package->repository)

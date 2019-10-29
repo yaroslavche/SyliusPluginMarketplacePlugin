@@ -22,6 +22,8 @@ class Plugin implements PluginInterface
     private $downloads;
     /** @var int $favers */
     private $favers;
+    /** @var bool $installed */
+    private $installed;
 
     /** @inheritDoc */
     public function install(): void
@@ -33,111 +35,94 @@ class Plugin implements PluginInterface
     {
     }
 
-    /**
-     * @return string
-     */
+    /** @inheritDoc */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     * @return PluginInterface
-     */
+    /** @inheritDoc */
     public function setName(string $name): PluginInterface
     {
         $this->name = $name;
         return $this;
     }
 
-    /**
-     * @return string
-     */
+    /** @inheritDoc */
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     * @return PluginInterface
-     */
+    /** @inheritDoc */
     public function setDescription(string $description): PluginInterface
     {
         $this->description = $description;
         return $this;
     }
 
-    /**
-     * @return string
-     */
+    /** @inheritDoc */
     public function getUrl(): string
     {
         return $this->url;
     }
 
-    /**
-     * @param string $url
-     * @return PluginInterface
-     */
+    /** @inheritDoc */
     public function setUrl(string $url): PluginInterface
     {
         $this->url = $url;
         return $this;
     }
 
-    /**
-     * @return string
-     */
+    /** @inheritDoc */
     public function getRepository(): string
     {
         return $this->repository;
     }
 
-    /**
-     * @param string $repository
-     * @return PluginInterface
-     */
+    /** @inheritDoc */
     public function setRepository(string $repository): PluginInterface
     {
         $this->repository = $repository;
         return $this;
     }
 
-    /**
-     * @return int
-     */
+    /** @inheritDoc */
     public function getDownloads(): int
     {
         return $this->downloads;
     }
 
-    /**
-     * @param int $downloads
-     * @return PluginInterface
-     */
+    /** @inheritDoc */
     public function setDownloads(int $downloads): PluginInterface
     {
         $this->downloads = $downloads;
         return $this;
     }
 
-    /**
-     * @return int
-     */
+    /** @inheritDoc */
     public function getFavers(): int
     {
         return $this->favers;
     }
 
-    /**
-     * @param int $favers
-     * @return PluginInterface
-     */
+    /** @inheritDoc */
     public function setFavers(int $favers): PluginInterface
     {
         $this->favers = $favers;
+        return $this;
+    }
+
+    /** @inheritDoc */
+    public function isInstalled(): bool
+    {
+        return $this->installed;
+    }
+
+    /** @inheritDoc */
+    public function setInstalled(bool $installed): PluginInterface
+    {
+        $this->installed = $installed;
         return $this;
     }
 }

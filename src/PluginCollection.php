@@ -72,7 +72,8 @@ class PluginCollection implements IteratorAggregate, JsonSerializable
                 'url' => $plugin->getUrl(),
                 'repository' => $plugin->getRepository(),
                 'downloads' => $plugin->getDownloads(),
-                'favers' => $plugin->getFavers()
+                'favers' => $plugin->getFavers(),
+                'installed' => $plugin->isInstalled(),
             ];
         }
         return $array;

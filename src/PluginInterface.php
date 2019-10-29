@@ -79,4 +79,15 @@ interface PluginInterface
      * @return PluginInterface
      */
     public function setFavers(int $favers): PluginInterface;
+
+    /**
+     * @return bool
+     */
+    public function isInstalled(): bool;
+
+    /**
+     * @param bool $installed
+     * @return PluginInterface
+     */
+    public function setInstalled(bool $installed): PluginInterface;
 }
