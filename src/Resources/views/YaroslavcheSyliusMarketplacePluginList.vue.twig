@@ -16,21 +16,21 @@
     </tr>
     <tr>
         <th class="one wide">#</th>
-        <th class="five wide single line" @click="sort('name')"
-            :class="{'ordered': currentSort.field === 'name'}">
+        <th class="five wide single line pointer" @click="sort('name')"
+            :class="{'sorted': currentSort.field === 'name'}">
             Name
             <i v-show="currentSort.field === 'name'" class="angle icon"
                :class="{'down': currentSort.direction === 'desc', 'up': currentSort.direction === 'asc'}"></i>
         </th>
         <th class="eight wide">Description</th>
-        <th class="one wide" @click="sort('downloads')"
-            :class="{'ordered': currentSort.field === 'downloads', 'asc': currentSort.direction === 'asc', 'desc': currentSort.direction === 'desc'}">
+        <th class="one wide pointer" @click="sort('downloads')"
+            :class="{'sorted': currentSort.field === 'downloads', 'asc': currentSort.direction === 'asc', 'desc': currentSort.direction === 'desc'}">
             <i class="cloud download icon"></i>
             <i v-show="currentSort.field === 'downloads'" class="angle icon"
                :class="{'down': currentSort.direction === 'desc', 'up': currentSort.direction === 'asc'}"></i>
         </th>
-        <th class="one wide" @click="sort('favers')"
-            :class="{'ordered': currentSort.field === 'favers', 'asc': currentSort.direction === 'asc', 'desc': currentSort.direction === 'desc'}">
+        <th class="one wide pointer" @click="sort('favers')"
+            :class="{'sorted': currentSort.field === 'favers', 'asc': currentSort.direction === 'asc', 'desc': currentSort.direction === 'desc'}">
             <i class="star outline icon"></i>
             <i v-show="currentSort.field === 'favers'" class="angle icon"
                :class="{'down': currentSort.direction === 'desc', 'up': currentSort.direction === 'asc'}"></i>

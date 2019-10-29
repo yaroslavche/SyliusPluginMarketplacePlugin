@@ -2,6 +2,10 @@
     background-color: #00b3ee;
 }
 
-th.ordered {
+th.sorted {
     color: #00b3ee !important;
+}
+
+.pointer {
+    cursor: pointer !important;
 }
