@@ -51,7 +51,11 @@ class PackagistPluginRepository implements PluginRepositoryInterface
         // ---
         $projectRootDir = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..');
         $composerJsonFilePath = sprintf('%s%scomposer.json', $projectRootDir, DIRECTORY_SEPARATOR);
-        $composerJson = json_decode(file_get_contents($composerJsonFilePath), true);
+        $composerJsonFileContent = file_get_contents($composerJsonFilePath);
+        if ($composerJsonFileContent === false) {
+            throw new Exception('Could not load file composer.json');
+        }
+        $composerJson = json_decode($composerJsonFileContent, true);
         // ---
         foreach ($responseObject->results as $package) {
             $plugin = new Plugin();

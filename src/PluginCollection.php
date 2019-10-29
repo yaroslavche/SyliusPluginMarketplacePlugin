@@ -16,7 +16,7 @@ use JsonSerializable;
  */
 class PluginCollection implements IteratorAggregate, JsonSerializable
 {
-    /** @var array<int, PluginInterface> $plugins */
+    /** @var array<string, PluginInterface> $plugins */
     private $plugins;
 
     /**
