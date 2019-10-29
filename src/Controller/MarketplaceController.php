@@ -44,7 +44,7 @@ final class MarketplaceController extends AbstractController
     public function list(): JsonResponse
     {
         try {
-            $plugins = $this->marketplace->getPluginRepository()->find();
+            $plugins = $this->marketplace->list();
         } catch (Exception $exception) {
             return $this->json(['status' => 'error', 'message' => $exception->getMessage()]);
         }

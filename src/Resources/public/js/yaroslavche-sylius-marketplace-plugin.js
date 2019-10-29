@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
                 }
                 this.selectVisible();
             },
-            selectVisible: function (start = 0, end = 0) {
+            selectVisible: function () {
                 this.visible = this.plugins.slice(this.currentPage * this.perPage, (this.currentPage + 1) * this.perPage);
             },
             setPage: function (page = 1) {
@@ -63,7 +63,6 @@ document.addEventListener('DOMContentLoaded', function (event) {
     });
 
     const marketplace = new Vue({
-        delimiters: ['${', '}'],
         el: '#yaroslavche-sylius-marketplace-plugin'
     });
 });

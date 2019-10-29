@@ -24,7 +24,7 @@ class Marketplace implements MarketplaceInterface
     /** @inheritDoc */
     public function list(?array $filter = null, ?array $sort = null, ?int $page = null): PluginCollection
     {
-        return $this->pluginRepository->search();
+        return $this->pluginRepository->find();
     }
 
     /** @inheritDoc */

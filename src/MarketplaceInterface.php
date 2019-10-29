@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Yaroslavche\SyliusMarketplacePlugin;
 
+use Exception;
+
 /**
  * Interface PluginMarketplaceInterface
  * @package Yaroslavche\SyliusMarketplacePlugin
@@ -15,6 +17,7 @@ interface MarketplaceInterface
      * @param array<string, string>|null $sort
      * @param int|null $page
      * @return PluginCollection
+     * @throws Exception
      */
     public function list(?array $filter = null, ?array $sort = null, ?int $page = null): PluginCollection;
 
