@@ -12,7 +12,8 @@
     "sylius/sylius": "^1.4",
     "guzzlehttp/guzzle": "^6.4",
     "ext-json": "*",
-    "nikic/php-parser": "^4.2"
+    "nikic/php-parser": "^4.2",
+    "composer/composer": "^1.9"
   },
   "require-dev": {
     "behat/behat": "^3.4",

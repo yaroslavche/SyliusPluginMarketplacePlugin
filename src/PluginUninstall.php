@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Yaroslavche\SyliusPluginMarketplacePlugin;
 
+use Exception;
+
 /**
  * Class PluginUninstall
  * @package Yaroslavche\SyliusPluginMarketplacePlugin
@@ -24,14 +26,19 @@ final class PluginUninstall
 
     /**
      * Uninstall plugin
+     * @throws Exception
      */
     public function uninstall(): void
     {
-        $this->removeImportedConfigs();
-        $this->unregisterBundle();
-        $this->removePackageConfig();
-        $this->uninstallAssets();
-        $this->clearCache();
+        try {
+            $this->removeImportedConfigs();
+            $this->unregisterBundle();
+            $this->removePackageConfig();
+            $this->uninstallAssets();
+            $this->clearCache();
+        } catch (Exception $exception) {
+            throw new Exception('Uninstall failed');
+        }
     }
 
     /**
@@ -42,7 +49,7 @@ final class PluginUninstall
     }
 
     /**
-     * Remove entry from config/bundles.php
+     * Remove entry from config/bundles.php return array
      */
     private function unregisterBundle(): void
     {
