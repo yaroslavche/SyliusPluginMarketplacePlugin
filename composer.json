@@ -15,7 +15,8 @@
     "nikic/php-parser": "^4.2",
     "composer/composer": "^1.9",
     "symfony/filesystem": "^4.3",
-    "symfony/finder": "^4.3"
+    "symfony/finder": "^4.3",
+    "symfony/yaml": "^4.3"
   },
   "require-dev": {
     "behat/behat": "^3.4",

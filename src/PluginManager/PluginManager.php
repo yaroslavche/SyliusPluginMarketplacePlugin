@@ -12,6 +12,7 @@ use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Stmt\Return_;
 use SplFileInfo;
+use Symfony\Component\Yaml\Yaml;
 use Yaroslavche\SyliusPluginMarketplacePlugin\Plugin\PluginInterface;
 use Yaroslavche\SyliusPluginMarketplacePlugin\Service\FilesystemService;
 use Yaroslavche\SyliusPluginMarketplacePlugin\Service\FinderService;
@@ -98,6 +99,35 @@ class PluginManager implements PluginManagerInterface
     /** @inheritDoc */
     public function importRoutes(PluginInterface $plugin): void
     {
+        $pluginResourceDir = sprintf(
+            '%s%s%s%ssrc%sResources%sconfig',
+            $this->pluginsDir,
+            DIRECTORY_SEPARATOR,
+            $plugin->getName(),
+            DIRECTORY_SEPARATOR,
+            DIRECTORY_SEPARATOR,
+            DIRECTORY_SEPARATOR
+        );
+        $routesConfigPath = sprintf(
+            '%s%sconfig%sroutes.yaml',
+            $this->rootDir,
+            DIRECTORY_SEPARATOR,
+            DIRECTORY_SEPARATOR
+        );
+        $routesConfig = Yaml::parseFile($routesConfigPath);
+        /** @var SplFileInfo $config */
+        foreach ($this->finderService->findConfigs($pluginResourceDir) as $config) {
+            if (!in_array($config->getExtension(), ['yml', 'yaml'])) {
+                continue;
+            }
+            /*
+            $configType = $this->guessConfigType($config);
+            if ($configType === 'routes') {
+                $routesConfig[str_replace(['/', '-'], '_', $plugin->getName())]['resource'] = $config->getFilename();
+            }
+            */
+        }
+        $this->filesystemService->saveFileContent($routesConfigPath, Yaml::dump($routesConfig));
     }
 
     /** @inheritDoc */
@@ -154,7 +184,6 @@ class PluginManager implements PluginManagerInterface
     /** @inheritDoc */
     public function writePluginConfig(PluginInterface $plugin): void
     {
-        // TODO: Implement writePluginConfig() method.
     }
 
     /** @inheritDoc */
@@ -206,8 +235,19 @@ class PluginManager implements PluginManagerInterface
         $this->filesystemService->remove($pluginDir);
     }
 
+    /** @inheritDoc */
     public function updateLock(): void
     {
         // TODO: Implement updateLock() method.
+    }
+
+    /**
+     * @param SplFileInfo $configFile
+     * @return string 'routes'|'services'
+     * @throws Exception
+     */
+    private function guessConfigType(SplFileInfo $configFile): string
+    {
+        return 'routes';
     }
 }

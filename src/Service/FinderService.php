@@ -35,4 +35,12 @@ class FinderService
         $iterator->rewind();
         return $iterator->current();
     }
+
+    public function findConfigs(string $pluginResourceDir): \Generator
+    {
+        $pluginClassFileFinder = $this->finder->files()->in($pluginResourceDir)/*->name(['*.yml', '*.yaml'])*/;
+        foreach ($pluginClassFileFinder->files() as $file) {
+            yield $file;
+        }
+    }
 }
