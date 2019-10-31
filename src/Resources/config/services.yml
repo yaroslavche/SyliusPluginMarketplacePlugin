@@ -4,9 +4,16 @@ services:
     tags:
       - { name: kernel.event_listener, event: sylius.menu.admin.main, method: addAdminMenuItems }
 
-  yaroslavche_sylius_plugin_marketplace_plugin_marketplace:
-    class: Yaroslavche\SyliusPluginMarketplacePlugin\Marketplace
+  yaroslavche_sylius_plugin_marketplace_plugin_plugin_marketplace: # xD
+    class: Yaroslavche\SyliusPluginMarketplacePlugin\PluginMarketplace\PluginMarketplace
     autowire: true
     autoconfigure: true
+    arguments:
+      $rootDir: '%kernel.project_dir%'
 
-  Yaroslavche\SyliusPluginMarketplacePlugin\Marketplace: '@yaroslavche_sylius_plugin_marketplace_plugin_marketplace'
+  Yaroslavche\SyliusPluginMarketplacePlugin\PluginMarketplace\PluginMarketplace: '@yaroslavche_sylius_plugin_marketplace_plugin_plugin_marketplace'
+
+  Yaroslavche\SyliusPluginMarketplacePlugin\Controller\PluginMarketplaceController:
+    arguments:
+      $pluginMarketplace: '@yaroslavche_sylius_plugin_marketplace_plugin_plugin_marketplace'
+    tags: ['controller.service_arguments']

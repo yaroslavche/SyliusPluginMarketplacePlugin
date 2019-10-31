@@ -22,11 +22,12 @@ class PluginMarketplace implements PluginMarketplaceInterface
 
     /**
      * PluginMarketplaceService constructor.
+     * @param string $rootDir
      */
-    public function __construct()
+    public function __construct(string $rootDir)
     {
         $this->pluginRepository = new PackagistPluginRepository();
-        $this->pluginManager = new PluginManager();
+        $this->pluginManager = new PluginManager($rootDir);
     }
 
     /** @inheritDoc */

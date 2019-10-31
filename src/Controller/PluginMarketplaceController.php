@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Yaroslavche\SyliusPluginMarketplacePlugin\Plugin\PluginInterface;
-use Yaroslavche\SyliusPluginMarketplacePlugin\PluginMarketplace\PluginMarketplace;
 use Yaroslavche\SyliusPluginMarketplacePlugin\PluginMarketplace\PluginMarketplaceInterface;
 
 /**
@@ -26,10 +25,11 @@ final class PluginMarketplaceController extends AbstractController
 
     /**
      * MarketplaceController constructor.
+     * @param PluginMarketplaceInterface $pluginMarketplace
      */
-    public function __construct()
+    public function __construct(PluginMarketplaceInterface $pluginMarketplace)
     {
-        $this->pluginMarketplace = new PluginMarketplace();
+        $this->pluginMarketplace = $pluginMarketplace;
     }
 
     /**

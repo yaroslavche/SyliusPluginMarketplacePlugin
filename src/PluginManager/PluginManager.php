@@ -8,18 +8,13 @@ use Composer\Composer;
 use Composer\Factory;
 use Composer\IO\NullIO;
 use Exception;
-use PhpParser\Node;
-use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ArrayItem;
-use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Stmt\Return_;
-use PhpParser\NodeTraverser;
-use PhpParser\NodeVisitorAbstract;
 use SplFileInfo;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
 use Yaroslavche\SyliusPluginMarketplacePlugin\Plugin\PluginInterface;
+use Yaroslavche\SyliusPluginMarketplacePlugin\Service\FilesystemService;
+use Yaroslavche\SyliusPluginMarketplacePlugin\Service\FinderService;
 use Yaroslavche\SyliusPluginMarketplacePlugin\Service\PhpParserService;
 
 /**
@@ -30,10 +25,6 @@ class PluginManager implements PluginManagerInterface
 {
     public const PLUGINS_DIR_NAME = 'plugins';
 
-    /** @var Filesystem $filesystem */
-    private $filesystem;
-    /** @var Finder $finder */
-    private $finder;
     /** @var string $rootDir */
     private $rootDir;
     /** @var string $pluginsDir */
@@ -42,20 +33,25 @@ class PluginManager implements PluginManagerInterface
     private $composer;
     /** @var PhpParserService $phpParserService */
     private $phpParserService;
+    /** @var FilesystemService $filesystemService */
+    private $filesystemService;
+    /** @var FinderService $finderService */
+    private $finderService;
 
     /**
      * PluginManager constructor.
+     * @param string $rootDir
      */
-    public function __construct()
+    public function __construct(string $rootDir)
     {
         $this->phpParserService = new PhpParserService();
-        $this->filesystem = new Filesystem();
-        $this->finder = new Finder();
-        $this->rootDir = '/home/yaroslav/projects/Sylius/SyliusMarketplacePlugin/tests/Application';
+        $this->filesystemService = new FilesystemService();
+        $this->finderService = new FinderService();
+        $this->rootDir = $rootDir;
         $this->pluginsDir = sprintf('%s%s%s', $this->rootDir, DIRECTORY_SEPARATOR, self::PLUGINS_DIR_NAME);
         $pluginsComposerJsonPath = sprintf('%s%scomposer.json', $this->pluginsDir, DIRECTORY_SEPARATOR);
-        if (!$this->filesystem->exists($pluginsComposerJsonPath)) {
-            $this->filesystem->appendToFile($pluginsComposerJsonPath, '{}');
+        if (!$this->filesystemService->fileExists($pluginsComposerJsonPath)) {
+            $this->filesystemService->saveFileContent($pluginsComposerJsonPath, '{}');
         }
         $this->composer = Factory::create(new NullIO(), $pluginsComposerJsonPath);
     }
@@ -102,20 +98,6 @@ class PluginManager implements PluginManagerInterface
     /** @inheritDoc */
     public function importRoutes(PluginInterface $plugin): void
     {
-        // get from autoload?
-        $pluginSrcDir = sprintf(
-            '%s%s%s%ssrc',
-            $this->pluginsDir,
-            DIRECTORY_SEPARATOR,
-            $plugin->getName(),
-            DIRECTORY_SEPARATOR
-        );
-        $pluginClassFileFinder = $this->finder->in($pluginSrcDir)->name('*Sylius*Plugin.php');
-        $iterator = $pluginClassFileFinder->getIterator();
-        $iterator->rewind();
-        /** @var SplFileInfo $pluginClassFile */
-        $pluginClassFile = $iterator->current();
-//        dd(substr($pluginClassFile->getFilename(), 0, -4));
     }
 
     /** @inheritDoc */
@@ -127,60 +109,46 @@ class PluginManager implements PluginManagerInterface
     /** @inheritDoc */
     public function registerBundle(PluginInterface $plugin): void
     {
-        /** load AST */
-        $bundlesFile = $this->rootDir . '/config/bundles.php';
-        if (!$this->filesystem->exists($bundlesFile)) {
-            throw new Exception('bundles.php file not found in config directory');
-        }
-        $code = file_get_contents($bundlesFile);
-        $ast = $this->phpParserService->loadAst($code);
+        /** load bundles AST */
+        $bundlesPhpFile = $this->rootDir . '/config/bundles.php';
+        $bundlesCode = $this->filesystemService->loadFileContent($bundlesPhpFile);
+        $bundlesAst = $this->phpParserService->codeToAst($bundlesCode);
 
-        /** check bundles array */
-        if (!$ast[0] instanceof Return_ || !$ast[0]->expr instanceof Array_) {
+        /** check bundles is default */
+        if (!$bundlesAst[0] instanceof Return_ || !$bundlesAst[0]->expr instanceof Array_) {
             throw new Exception('Look\'s like you have custom bundles.php. Please install plugins manually.');
         }
         /** @var Array_ $bundlesArray */
-        $bundlesArray = $ast[0]->expr;
+        $bundlesArray = $bundlesAst[0]->expr;
+
+        /** load plugin bundle AST */
+        $pluginSrcDir = sprintf(
+            '%s%s%s%ssrc',
+            $this->pluginsDir,
+            DIRECTORY_SEPARATOR,
+            $plugin->getName(),
+            DIRECTORY_SEPARATOR
+        );
+        /** @var SplFileInfo $pluginBundleFileInfo */
+        $pluginBundleFileInfo = $this->finderService->findPluginBundleClass($pluginSrcDir);
+        $pluginBundleCode = $this->filesystemService->loadFileContent($pluginBundleFileInfo->getRealPath());
+        $pluginBundleAst = $this->phpParserService->codeToAst($pluginBundleCode);
 
         /** check registered */
-        $pluginFQCN = $this->getPluginBundleClassName($plugin);
+        $pluginFQCN = $this->phpParserService->getFqcnFromAst($pluginBundleAst);
         /** @var ArrayItem $arrayItem */
         foreach ($bundlesArray->items as $arrayItem) {
-            if ($pluginFQCN === $this->getBundleClassNameFromExpr($arrayItem->key)) {
+            if ($pluginFQCN === $this->phpParserService->getFqcnFromExpr($arrayItem->key)) {
                 return;
             }
         }
 
         /** register */
-        $traverser = new NodeTraverser();
-        $visitor = new class ($pluginFQCN) extends NodeVisitorAbstract {
-            /** @var string $pluginFQCN */
-            private $pluginFQCN;
+        $this->phpParserService->insertBundle($bundlesAst, $pluginFQCN);
 
-            /**
-             *  constructor.
-             * @param string $pluginFQCN
-             */
-            public function __construct(string $pluginFQCN)
-            {
-                $this->pluginFQCN = $pluginFQCN;
-            }
-
-            /** @inheritDoc */
-            public function enterNode(Node $node)
-            {
-                if ($node instanceof Array_) {
-                    $key = new ClassConstFetch(
-                        $this->pluginFQCN,
-                        $this->pluginFQCN
-                    );
-//                    $node->items[] = new ArrayItem($key);
-                }
-            }
-        };
-        $traverser->addVisitor($visitor);
-        $ast = $traverser->traverse($ast);
-        $this->filesystem->appendToFile($bundlesFile . '_test.php', $this->phpParserService->astToCode($ast));
+        /** save */
+        $code = $this->phpParserService->astToCode($bundlesAst);
+        $this->filesystemService->saveFileContent($bundlesPhpFile, $code);
     }
 
     /** @inheritDoc */
@@ -235,36 +203,11 @@ class PluginManager implements PluginManagerInterface
     public function removePackage(PluginInterface $plugin): void
     {
         $pluginDir = sprintf('%s%s%s', $this->pluginsDir, DIRECTORY_SEPARATOR, $plugin->getName());
-        $this->filesystem->remove($pluginDir);
+        $this->filesystemService->remove($pluginDir);
     }
 
     public function updateLock(): void
     {
         // TODO: Implement updateLock() method.
-    }
-
-    /**
-     * @param PluginInterface $plugin
-     * @return string
-     */
-    private function getPluginBundleClassName(PluginInterface $plugin): string
-    {
-        return $plugin->getName();
-    }
-
-    /**
-     * @param Expr $key
-     * @return string
-     * @throws Exception
-     */
-    private function getBundleClassNameFromExpr(Expr $key): string
-    {
-        switch (get_class($key)) {
-            case ClassConstFetch::class:
-                /** @var ClassConstFetch $key */
-                return implode('\\', $key->class->parts);
-            default:
-                throw new Exception('Unhandled bundle classname expression');
-        }
     }
 }

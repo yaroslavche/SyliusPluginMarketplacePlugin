@@ -6,7 +6,6 @@ namespace Yaroslavche\SyliusPluginMarketplacePlugin\PluginMarketplace;
 
 use Exception;
 use Yaroslavche\SyliusPluginMarketplacePlugin\Plugin\PluginInterface;
-use Yaroslavche\SyliusPluginMarketplacePlugin\PluginRepository\PluginCollection;
 use Yaroslavche\SyliusPluginMarketplacePlugin\PluginRepository\PluginRepositoryInterface;
 
 /**
