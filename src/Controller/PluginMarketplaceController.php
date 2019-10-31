@@ -20,16 +20,16 @@ use Yaroslavche\SyliusPluginMarketplacePlugin\PluginInterface;
 final class PluginMarketplaceController extends AbstractController
 {
     /**
-     * @var PluginMarketplaceInterface $marketplace
+     * @var PluginMarketplaceInterface $pluginMarketplace
      */
-    private $marketplace;
+    private $pluginMarketplace;
 
     /**
      * MarketplaceController constructor.
      */
     public function __construct()
     {
-        $this->marketplace = new PluginMarketplace();
+        $this->pluginMarketplace = new PluginMarketplace();
     }
 
     /**
@@ -46,7 +46,7 @@ final class PluginMarketplaceController extends AbstractController
     public function list(): JsonResponse
     {
         try {
-            $plugins = $this->marketplace->list();
+            $plugins = $this->pluginMarketplace->list();
         } catch (Exception $exception) {
             return $this->json(['status' => 'error', 'message' => $exception->getMessage()]);
         }
@@ -64,7 +64,7 @@ final class PluginMarketplaceController extends AbstractController
         if (null === $pluginName) {
             throw new Exception('Invalid plugin name');
         }
-        return $this->marketplace->getPluginRepository()->find($pluginName)->get($pluginName);
+        return $this->pluginMarketplace->getPluginRepository()->find($pluginName)->get($pluginName);
     }
 
     /**
@@ -75,7 +75,7 @@ final class PluginMarketplaceController extends AbstractController
     {
         try {
             $plugin = $this->getPlugin($request);
-            $this->marketplace->installPlugin($plugin);
+            $this->pluginMarketplace->installPlugin($plugin);
             return $this->json(['status' => 'success', 'message' => sprintf('%s installed', $plugin->getName())]);
         } catch (Exception $exception) {
             return $this->json(['status' => 'error', 'message' => $exception->getMessage()]);
@@ -90,7 +90,7 @@ final class PluginMarketplaceController extends AbstractController
     {
         try {
             $plugin = $this->getPlugin($request);
-            $this->marketplace->uninstallPlugin($plugin);
+            $this->pluginMarketplace->uninstallPlugin($plugin);
             return $this->json(['status' => 'success', 'message' => sprintf('%s uninstalled', $plugin->getName())]);
         } catch (Exception $exception) {
             return $this->json(['status' => 'error', 'message' => $exception->getMessage()]);

@@ -30,13 +30,13 @@ class PluginMarketplace implements PluginMarketplaceInterface
     /** @inheritDoc */
     public function installPlugin(PluginInterface $plugin): void
     {
-        (new PluginInstall($plugin))->install();
+        (new PluginManager())->install($plugin);
     }
 
     /** @inheritDoc */
     public function uninstallPlugin(PluginInterface $plugin): void
     {
-        (new PluginUninstall($plugin))->uninstall();
+        (new PluginManager())->uninstall($plugin);
     }
 
     /** @inheritDoc */

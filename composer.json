@@ -13,7 +13,9 @@
     "guzzlehttp/guzzle": "^6.4",
     "ext-json": "*",
     "nikic/php-parser": "^4.2",
-    "composer/composer": "^1.9"
+    "composer/composer": "^1.9",
+    "symfony/filesystem": "^4.3",
+    "symfony/finder": "^4.3"
   },
   "require-dev": {
     "behat/behat": "^3.4",
