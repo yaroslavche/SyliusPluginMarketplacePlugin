@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Yaroslavche\SyliusPluginMarketplacePlugin;
+namespace Yaroslavche\SyliusPluginMarketplacePlugin\PluginManager;
+
+use Yaroslavche\SyliusPluginMarketplacePlugin\Plugin\PluginInterface;
 
 /**
  * Interface PluginManagerInterface
- * @package Yaroslavche\SyliusPluginMarketplacePlugin
+ * @package Yaroslavche\SyliusPluginMarketplacePlugin\PluginManager
  */
 interface PluginManagerInterface
 {

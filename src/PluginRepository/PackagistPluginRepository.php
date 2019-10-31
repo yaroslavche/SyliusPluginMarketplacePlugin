@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Yaroslavche\SyliusPluginMarketplacePlugin;
+namespace Yaroslavche\SyliusPluginMarketplacePlugin\PluginRepository;
 
 use Exception;
 use GuzzleHttp\Client;
+use Yaroslavche\SyliusPluginMarketplacePlugin\Plugin\Plugin;
 
 /**
  * Class PackagistPluginRepository
- * @package Yaroslavche\SyliusPluginMarketplacePlugin
+ * @package Yaroslavche\SyliusPluginMarketplacePlugin\PluginRepository
  */
 class PackagistPluginRepository implements PluginRepositoryInterface
 {
@@ -48,21 +49,11 @@ class PackagistPluginRepository implements PluginRepositoryInterface
         $response = $this->client->get($pageUri);
         $responseObject = json_decode($response->getBody()->getContents());
         $collection = $collection ?? new PluginCollection();
-        // ---
-        $projectRootDir = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..');
-        $composerJsonFilePath = sprintf('%s%scomposer.json', $projectRootDir, DIRECTORY_SEPARATOR);
-        $composerJsonFileContent = file_get_contents($composerJsonFilePath);
-        if ($composerJsonFileContent === false) {
-            throw new Exception('Could not load file composer.json');
-        }
-        $composerJson = json_decode($composerJsonFileContent, true);
-        // ---
         foreach ($responseObject->results as $package) {
             $plugin = new Plugin();
-            $installed = array_key_exists($package->name, $composerJson['require']);
             $plugin
                 ->setName($package->name)
-                ->setInstalled($installed)
+                ->setInstalled(false)
                 ->setDescription($package->description)
                 ->setUrl($package->url)
                 ->setRepository($package->repository)

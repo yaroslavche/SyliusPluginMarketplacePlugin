@@ -9,9 +9,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Yaroslavche\SyliusPluginMarketplacePlugin\PluginMarketplaceInterface;
-use Yaroslavche\SyliusPluginMarketplacePlugin\PluginMarketplace;
-use Yaroslavche\SyliusPluginMarketplacePlugin\PluginInterface;
+use Yaroslavche\SyliusPluginMarketplacePlugin\Plugin\PluginInterface;
+use Yaroslavche\SyliusPluginMarketplacePlugin\PluginMarketplace\PluginMarketplace;
+use Yaroslavche\SyliusPluginMarketplacePlugin\PluginMarketplace\PluginMarketplaceInterface;
 
 /**
  * Class MarketplaceController
@@ -46,7 +46,7 @@ final class PluginMarketplaceController extends AbstractController
     public function list(): JsonResponse
     {
         try {
-            $plugins = $this->pluginMarketplace->list();
+            $plugins = $this->pluginMarketplace->getPluginRepository()->find();
         } catch (Exception $exception) {
             return $this->json(['status' => 'error', 'message' => $exception->getMessage()]);
         }

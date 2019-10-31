@@ -2,16 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Yaroslavche\SyliusPluginMarketplacePlugin;
+namespace Yaroslavche\SyliusPluginMarketplacePlugin\PluginMarketplace;
+
+use Yaroslavche\SyliusPluginMarketplacePlugin\Plugin\PluginInterface;
+use Yaroslavche\SyliusPluginMarketplacePlugin\PluginManager\PluginManager;
+use Yaroslavche\SyliusPluginMarketplacePlugin\PluginRepository\PackagistPluginRepository;
+use Yaroslavche\SyliusPluginMarketplacePlugin\PluginRepository\PluginRepositoryInterface;
 
 /**
  * Class PluginMarketplace
- * @package Yaroslavche\SyliusPluginMarketplacePlugin
+ * @package Yaroslavche\SyliusPluginMarketplacePlugin\PluginMarketplace
  */
 class PluginMarketplace implements PluginMarketplaceInterface
 {
     /** @var PluginRepositoryInterface $pluginRepository */
     private $pluginRepository;
+    /** @var PluginManager $pluginManager */
+    private $pluginManager;
 
     /**
      * PluginMarketplaceService constructor.
@@ -19,24 +26,19 @@ class PluginMarketplace implements PluginMarketplaceInterface
     public function __construct()
     {
         $this->pluginRepository = new PackagistPluginRepository();
-    }
-
-    /** @inheritDoc */
-    public function list(?array $filter = null, ?array $sort = null, ?int $page = null): PluginCollection
-    {
-        return $this->pluginRepository->find();
+        $this->pluginManager = new PluginManager();
     }
 
     /** @inheritDoc */
     public function installPlugin(PluginInterface $plugin): void
     {
-        (new PluginManager())->install($plugin);
+        $this->pluginManager->install($plugin);
     }
 
     /** @inheritDoc */
     public function uninstallPlugin(PluginInterface $plugin): void
     {
-        (new PluginManager())->uninstall($plugin);
+        $this->pluginManager->uninstall($plugin);
     }
 
     /** @inheritDoc */

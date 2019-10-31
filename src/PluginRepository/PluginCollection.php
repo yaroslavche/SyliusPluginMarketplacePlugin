@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Yaroslavche\SyliusPluginMarketplacePlugin;
+namespace Yaroslavche\SyliusPluginMarketplacePlugin\PluginRepository;
 
 use ArrayIterator;
 use ArrayObject;
 use Exception;
 use IteratorAggregate;
 use JsonSerializable;
+use Yaroslavche\SyliusPluginMarketplacePlugin\Plugin\PluginInterface;
 
 /**
  * Class PluginCollection
- * @package Yaroslavche\SyliusPluginMarketplacePlugin
+ * @package Yaroslavche\SyliusPluginMarketplacePlugin\PluginRepository
  */
 class PluginCollection implements IteratorAggregate, JsonSerializable
 {

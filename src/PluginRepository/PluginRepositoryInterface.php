@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Yaroslavche\SyliusPluginMarketplacePlugin;
+namespace Yaroslavche\SyliusPluginMarketplacePlugin\PluginRepository;
 
 use Exception;
 
 /**
  * Interface PluginRepositoryInterface
- * @package Yaroslavche\SyliusPluginMarketplacePlugin
+ * @package Yaroslavche\SyliusPluginMarketplacePlugin\PluginRepository
  */
 interface PluginRepositoryInterface
 {

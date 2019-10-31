@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yaroslavche\SyliusPluginMarketplacePlugin;
+namespace Yaroslavche\SyliusPluginMarketplacePlugin\PluginManager;
 
 use Composer\Composer;
 use Composer\Factory;
@@ -19,12 +19,14 @@ use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitorAbstract;
 use PhpParser\ParserFactory;
 use PhpParser\PrettyPrinter\Standard;
+use SplFileInfo;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Yaroslavche\SyliusPluginMarketplacePlugin\Plugin\PluginInterface;
 
 /**
  * Class PluginManager
- * @package Yaroslavche\SyliusPluginMarketplacePlugin
+ * @package Yaroslavche\SyliusPluginMarketplacePlugin\PluginManager
  */
 class PluginManager implements PluginManagerInterface
 {
@@ -62,7 +64,7 @@ class PluginManager implements PluginManagerInterface
     public function install(PluginInterface $plugin): void
     {
         try {
-//            $this->loadPackage($plugin);
+            $this->loadPackage($plugin);
             $this->registerBundle($plugin);
             $this->importRoutes($plugin);
             $this->importServices($plugin);
@@ -83,7 +85,7 @@ class PluginManager implements PluginManagerInterface
         $this->unregisterBundle($plugin);
         $this->removePluginConfig($plugin);
         $this->uninstallAssets($plugin);
-//        $this->removePackage($plugin);
+        $this->removePackage($plugin);
         $this->clearCache();
     }
 
@@ -91,15 +93,28 @@ class PluginManager implements PluginManagerInterface
     public function loadPackage(PluginInterface $plugin): void
     {
         $package = $this->composer->getRepositoryManager()->findPackage($plugin->getName(), '*');
-        $targetDir = sprintf('%s%s%s', $this->pluginsDir, DIRECTORY_SEPARATOR, $plugin->getName());
-        $this->composer->getDownloadManager()->download($package, $targetDir);
+        $pluginDir = sprintf('%s%s%s', $this->pluginsDir, DIRECTORY_SEPARATOR, $plugin->getName());
+        $this->composer->getDownloadManager()->download($package, $pluginDir);
         $this->updateLock();
     }
 
     /** @inheritDoc */
     public function importRoutes(PluginInterface $plugin): void
     {
-        // TODO: Implement importRoutes() method.
+        // get from autoload?
+        $pluginSrcDir = sprintf(
+            '%s%s%s%ssrc',
+            $this->pluginsDir,
+            DIRECTORY_SEPARATOR,
+            $plugin->getName(),
+            DIRECTORY_SEPARATOR
+        );
+        $pluginClassFileFinder = $this->finder->in($pluginSrcDir)->name('*Sylius*Plugin.php');
+        $iterator = $pluginClassFileFinder->getIterator();
+        $iterator->rewind();
+        /** @var SplFileInfo $pluginClassFile */
+        $pluginClassFile = $iterator->current();
+//        dd(substr($pluginClassFile->getFilename(), 0, -4));
     }
 
     /** @inheritDoc */
@@ -255,7 +270,7 @@ class PluginManager implements PluginManagerInterface
                 /** @var ClassConstFetch $key */
                 return implode('\\', $key->class->parts);
             default:
-                throw new Exception('Unhandled expression');
+                throw new Exception('Unhandled bundle classname expression');
         }
     }
 }

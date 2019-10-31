@@ -2,32 +2,28 @@
 
 declare(strict_types=1);
 
-namespace Yaroslavche\SyliusPluginMarketplacePlugin;
+namespace Yaroslavche\SyliusPluginMarketplacePlugin\PluginMarketplace;
 
 use Exception;
+use Yaroslavche\SyliusPluginMarketplacePlugin\Plugin\PluginInterface;
+use Yaroslavche\SyliusPluginMarketplacePlugin\PluginRepository\PluginCollection;
+use Yaroslavche\SyliusPluginMarketplacePlugin\PluginRepository\PluginRepositoryInterface;
 
 /**
  * Interface PluginMarketplaceInterface
- * @package Yaroslavche\SyliusPluginMarketplacePlugin
+ * @package Yaroslavche\SyliusPluginMarketplacePlugin\PluginMarketplace
  */
 interface PluginMarketplaceInterface
 {
     /**
-     * @param array<string, string>|null $filter
-     * @param array<string, string>|null $sort
-     * @param int|null $page
-     * @return PluginCollection
-     * @throws Exception
-     */
-    public function list(?array $filter = null, ?array $sort = null, ?int $page = null): PluginCollection;
-
-    /**
      * @param PluginInterface $plugin
+     * @throws Exception
      */
     public function installPlugin(PluginInterface $plugin): void;
 
     /**
      * @param PluginInterface $plugin
+     * @throws Exception
      */
     public function uninstallPlugin(PluginInterface $plugin): void;
 
