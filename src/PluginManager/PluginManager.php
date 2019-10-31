@@ -8,7 +8,6 @@ use Composer\Composer;
 use Composer\Factory;
 use Composer\IO\NullIO;
 use Exception;
-use PhpParser\Error;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\Array_;
@@ -17,12 +16,11 @@ use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Stmt\Return_;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitorAbstract;
-use PhpParser\ParserFactory;
-use PhpParser\PrettyPrinter\Standard;
 use SplFileInfo;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Yaroslavche\SyliusPluginMarketplacePlugin\Plugin\PluginInterface;
+use Yaroslavche\SyliusPluginMarketplacePlugin\Service\PhpParserService;
 
 /**
  * Class PluginManager
@@ -42,12 +40,15 @@ class PluginManager implements PluginManagerInterface
     private $pluginsDir;
     /** @var Composer $composer */
     private $composer;
+    /** @var PhpParserService $phpParserService */
+    private $phpParserService;
 
     /**
      * PluginManager constructor.
      */
     public function __construct()
     {
+        $this->phpParserService = new PhpParserService();
         $this->filesystem = new Filesystem();
         $this->finder = new Finder();
         $this->rootDir = '/home/yaroslav/projects/Sylius/SyliusMarketplacePlugin/tests/Application';
@@ -132,12 +133,7 @@ class PluginManager implements PluginManagerInterface
             throw new Exception('bundles.php file not found in config directory');
         }
         $code = file_get_contents($bundlesFile);
-        $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
-        try {
-            $ast = $parser->parse($code);
-        } catch (Error $error) {
-            throw new Exception($error->getMessage(), $error->getCode(), $error);
-        }
+        $ast = $this->phpParserService->loadAst($code);
 
         /** check bundles array */
         if (!$ast[0] instanceof Return_ || !$ast[0]->expr instanceof Array_) {
@@ -184,9 +180,7 @@ class PluginManager implements PluginManagerInterface
         };
         $traverser->addVisitor($visitor);
         $ast = $traverser->traverse($ast);
-        $prettyPrinter = new Standard();
-        $newCode = $prettyPrinter->prettyPrintFile($ast);
-        $this->filesystem->appendToFile($bundlesFile . '_test.php', $newCode);
+        $this->filesystem->appendToFile($bundlesFile . '_test.php', $this->phpParserService->astToCode($ast));
     }
 
     /** @inheritDoc */
