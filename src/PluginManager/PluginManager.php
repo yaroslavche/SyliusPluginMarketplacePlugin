@@ -136,6 +136,21 @@ class PluginManager implements PluginManagerInterface
         // TODO: Implement importServices() method.
     }
 
+    private function getPluginSrcPath(PluginInterface $plugin): string
+    {
+        return sprintf('%s%s%s%ssrc', $this->pluginsDir, DIRECTORY_SEPARATOR, $plugin->getName(), DIRECTORY_SEPARATOR);
+    }
+
+    private function getPluginBundleFqcn(PluginInterface $plugin): string
+    {
+        /** @var SplFileInfo $pluginBundleFileInfo */
+        $pluginBundleFileInfo = $this->finderService->findPluginBundleClass($this->getPluginSrcPath($plugin));
+        $pluginBundleCode = $this->filesystemService->loadFileContent($pluginBundleFileInfo->getRealPath());
+        $pluginBundleAst = $this->phpParserService->codeToAst($pluginBundleCode);
+
+        return $this->phpParserService->getFqcnFromAst($pluginBundleAst);
+    }
+
     /** @inheritDoc */
     public function registerBundle(PluginInterface $plugin): void
     {
@@ -144,37 +159,24 @@ class PluginManager implements PluginManagerInterface
         $bundlesCode = $this->filesystemService->loadFileContent($bundlesPhpFile);
         $bundlesAst = $this->phpParserService->codeToAst($bundlesCode);
 
-        /** check bundles is default */
+        /** check bundles.php is default */
         if (!$bundlesAst[0] instanceof Return_ || !$bundlesAst[0]->expr instanceof Array_) {
             throw new Exception('Look\'s like you have custom bundles.php. Please install plugins manually.');
         }
         /** @var Array_ $bundlesArray */
         $bundlesArray = $bundlesAst[0]->expr;
 
-        /** load plugin bundle AST */
-        $pluginSrcDir = sprintf(
-            '%s%s%s%ssrc',
-            $this->pluginsDir,
-            DIRECTORY_SEPARATOR,
-            $plugin->getName(),
-            DIRECTORY_SEPARATOR
-        );
-        /** @var SplFileInfo $pluginBundleFileInfo */
-        $pluginBundleFileInfo = $this->finderService->findPluginBundleClass($pluginSrcDir);
-        $pluginBundleCode = $this->filesystemService->loadFileContent($pluginBundleFileInfo->getRealPath());
-        $pluginBundleAst = $this->phpParserService->codeToAst($pluginBundleCode);
-
         /** check registered */
-        $pluginFQCN = $this->phpParserService->getFqcnFromAst($pluginBundleAst);
+        $pluginFqcn = $this->getPluginBundleFqcn($plugin);
         /** @var ArrayItem $arrayItem */
         foreach ($bundlesArray->items as $arrayItem) {
-            if ($pluginFQCN === $this->phpParserService->getFqcnFromExpr($arrayItem->key)) {
+            if ($pluginFqcn === $this->phpParserService->getFqcnFromExpr($arrayItem->key)) {
                 return;
             }
         }
 
         /** register */
-        $this->phpParserService->insertBundle($bundlesAst, $pluginFQCN);
+        $this->phpParserService->insertBundle($bundlesAst, $pluginFqcn);
 
         /** save */
         $code = $this->phpParserService->astToCode($bundlesAst);
@@ -184,6 +186,11 @@ class PluginManager implements PluginManagerInterface
     /** @inheritDoc */
     public function writePluginConfig(PluginInterface $plugin): void
     {
+        $pluginFqcn = $this->getPluginBundleFqcn($plugin);
+
+        $config = new BundleConfig($this->filesystemService, $this->finderService, $this->rootDir);
+        $bundleConfig = $config->load($this->getPluginSrcPath($plugin), $pluginFqcn);
+        $this->filesystemService->saveFileContent($this->rootDir . '/config/bundle.yml', Yaml::dump($bundleConfig));
     }
 
     /** @inheritDoc */
