@@ -9,7 +9,6 @@ use Exception;
 use LogicException;
 use ReflectionClass;
 use ReflectionException;
-use Sylius\Bundle\CoreBundle\DependencyInjection\Configuration;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\BooleanNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\EnumNodeDefinition;
@@ -20,7 +19,6 @@ use Symfony\Component\Config\Definition\Builder\ScalarNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Builder\VariableNodeDefinition;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Symfony\Component\Config\Definition\NodeInterface;
 use Yaroslavche\SyliusPluginMarketplacePlugin\Service\FilesystemService;
 use Yaroslavche\SyliusPluginMarketplacePlugin\Service\FinderService;
 
@@ -61,12 +59,12 @@ class BundleConfig
 
     /**
      * @param string $pluginSrcDir
-     * @param string $pluginFqcn
+     * @param string $pluginBaseNamespace
      * @return array
      * @throws ReflectionException
      * @throws Exception
      */
-    public function load(string $pluginSrcDir, string $pluginFqcn): array
+    public function load(string $pluginSrcDir, string $pluginBaseNamespace): array
     {
         $configurationClass = sprintf(
             '%s%sDependencyInjection%sConfiguration.php',
@@ -77,12 +75,8 @@ class BundleConfig
         if (!$this->filesystemService->fileExists($configurationClass)) {
             throw new Exception('Configuration not found.');
         }
-//        $loader = new \Composer\Autoload\ClassLoader();
-//        $loader->add($pluginFqcn, $pluginSrcDir);
-//        $loader->register();
-//        $pluginConfigFqcn = sprintf('%s\\DependencyInjection\\Configuration', $pluginFqcn);
-//        $loader->loadClass($pluginConfigFqcn);
-        $pluginConfigFqcn = Configuration::class;
+        require_once $configurationClass;
+        $pluginConfigFqcn = $pluginBaseNamespace . '\\DependencyInjection\\Configuration';
         $configuration = new ReflectionClass($pluginConfigFqcn);
 
         /** @var ConfigurationInterface $configurationInstance */

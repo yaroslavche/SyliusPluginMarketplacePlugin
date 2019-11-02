@@ -30,7 +30,7 @@ class FinderService
      */
     public function findPluginBundleClass(string $pluginSrcDir): SplFileInfo
     {
-        $pluginClassFileFinder = $this->finder->files()->in($pluginSrcDir)->name('*Sylius*Plugin.php');
+        $pluginClassFileFinder = $this->finder->files()->in($pluginSrcDir)->name('*Plugin.php');
         $iterator = $pluginClassFileFinder->getIterator();
         $iterator->rewind();
         return $iterator->current();

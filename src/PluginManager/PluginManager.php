@@ -187,9 +187,12 @@ class PluginManager implements PluginManagerInterface
     public function writePluginConfig(PluginInterface $plugin): void
     {
         $pluginFqcn = $this->getPluginBundleFqcn($plugin);
+        $namespaceParts = explode('\\', $pluginFqcn);
+        array_pop($namespaceParts);
+        $pluginBaseNamespace = implode('\\', $namespaceParts);
 
         $config = new BundleConfig($this->filesystemService, $this->finderService, $this->rootDir);
-        $bundleConfig = $config->load($this->getPluginSrcPath($plugin), $pluginFqcn);
+        $bundleConfig = $config->load($this->getPluginSrcPath($plugin), $pluginBaseNamespace);
         $this->filesystemService->saveFileContent($this->rootDir . '/config/bundle.yml', Yaml::dump($bundleConfig));
     }
 
