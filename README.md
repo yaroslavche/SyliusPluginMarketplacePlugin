@@ -1,3 +1,5 @@
+NOTE. There is no point in continuing, because Sylius team has released(?) its own marketplace and there are no import conventions.
+
 ```bash
 $ composer require yaroslavche/sylius-plugin-marketplace-plugin:dev-master
 ```
